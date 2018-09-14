@@ -6,12 +6,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:supersecurepassword@db/log'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////app/app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# thanks to https://stackoverflow.com/a/35819857
-app.config['SQLALCHEMY_POOL_SIZE'] = 100
-app.config['SQLALCHEMY_POOL_RECYCLE'] = 280
 
 app.config.from_envvar('BATHROOM_AVAILABILITY_CONF')
 

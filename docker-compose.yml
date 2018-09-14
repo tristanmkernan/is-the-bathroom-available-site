@@ -7,9 +7,3 @@ services:
     restart: always
     environment:
         BATHROOM_AVAILABILITY_CONF: "/app/app.config"
-  db:
-    image: mysql:5.7
-    restart: always
-    environment:
-        MYSQL_ROOT_PASSWORD: supersecurepassword
-        MYSQL_DATABASE: log

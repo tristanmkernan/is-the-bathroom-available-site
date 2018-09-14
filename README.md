@@ -16,9 +16,7 @@ When the ambient light is high (based on some pre-defined threshold), the bathro
 
 1. Set a good password in `app.config`.
 2. Build the application: `$ docker-compose build`
-3. Let mysql perform its first-run initialization: `$ docker-compose up db`
-4. When it's done, about a minute later, kill it with `Control-c`
-5. Run the full application: `$ docker-compose up`
+3. Run the full application: `$ docker-compose up`
 
 Use the typical `docker-compose` commands to run in the background.
 
