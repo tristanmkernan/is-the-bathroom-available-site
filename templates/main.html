@@ -1,65 +1,75 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>STATUS: {% if available %}AVAILABLE{% else %}UNAVAILABLE{% endif %}</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
-        <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
-    </head>
-    <body>
-        <section class="hero is-fullheight {% if available %} is-success {% else %} is-danger {% endif %}">
-            <!-- Hero head: will stick at the top -->
-            <div class="hero-head">
-                <header class="navbar">
-                    <div class="container">
-                        <div class="navbar-brand">
-                            <a class="navbar-item"
-                               href="/">
-                                IS THE BATHROOM AVAILABLE?!
-                            </a>
-                        </div>
-                    </div>
-                </header>
-            </div>
-
-            <!-- Hero content: will be in the middle -->
-            <div class="hero-body">
-                <div class="container has-text-centered">
-                    <h1 class="title">
-                        {% if available %}
-                        The Bathroom Is AVAILABLE
-                        {% else %}
-                        The Bathroom Is UNAVAILABLE
-                        {% endif %}
-                    </h1>
-                    <h2 id="elapsed" class="subtitle">
-                        <!-- Display how long it's been since the data has been checked -->
-                        Last checked 0 seconds ago
-                    </h2>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>STATUS: {% if available %}AVAILABLE{% else %}UNAVAILABLE{% endif %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+</head>
+<body>
+<section class="hero is-fullheight {% if available %} is-success {% else %} is-danger {% endif %}">
+    <!-- Hero head: will stick at the top -->
+    <div class="hero-head">
+        <header class="navbar">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item"
+                       href="/">
+                        Is the Bathroom Available?
+                    </a>
                 </div>
             </div>
-        </section>
-        <footer class="footer">
-            <div class="content has-text-centered">
-                <p>
-                    <strong>Is The Bathroom Available?</strong> by <a href="https://github.com/russon77">Tristan</a>. The source code is licensed
-                    <a href="http://opensource.org/licenses/GPL-3.0">GPL-3.0</a>.
-                </p>
-            </div>
-        </footer>
+        </header>
+    </div>
 
-        <script>
-         var loadedAt = Date.now();
-         var el = document.getElementById("elapsed");
+    <!-- Hero content: will be in the middle -->
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <h1 class="title">
+                {% if record.available %}
+                    The Bathroom Is AVAILABLE
+                {% else %}
+                    The Bathroom Is UNAVAILABLE
+                {% endif %}
+            </h1>
+            <h2 id="elapsedSeen" class="subtitle">
+                <!-- Display how long it's been since the data has been checked -->
+                Last seen 0 seconds ago
+            </h2>
+            <h2 id="elapsedLoad" class="subtitle">
+                <!-- Display how long it's been since the data has been checked -->
+                Last checked 0 seconds ago
+            </h2>
+        </div>
+    </div>
+</section>
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>
+            <strong>Is The Bathroom Available?</strong> by <a href="https://github.com/russon77">Tristan</a>. The source
+            code is licensed
+            <a href="http://opensource.org/licenses/GPL-3.0">GPL-3.0</a>.
+        </p>
+    </div>
+</footer>
 
-         setInterval(function() {
-             var elapsed = Math.round((Date.now() - loadedAt) / 1000); // seconds since initial page load
+<script>
+    var lastSeen = {{ record.timestamp|date_to_millis }};
+    var loadedAt = Date.now();
 
-             el.innerHTML = "Last checked " + elapsed + " seconds ago";
-         },
-                     250
-         );
-        </script>
-    </body>
+    var elLoad = document.getElementById("elapsedLoad");
+    var elSeen = document.getElementById("elapsedSeen");
+
+
+    setInterval(function () {
+            var elapsedSinceLoad = Math.round((Date.now() - loadedAt) / 1000);
+            var elapsedSinceSeen = Math.round((Date.now() - lastSeen) / 1000);
+
+            elLoad.innerHTML = "Last checked " + elapsedSinceLoad + " seconds ago";
+            elSeen.innerHTML = "Last seen " + elapsedSinceSeen + " seconds ago";
+        },
+        250
+    );
+</script>
+</body>
 </html>

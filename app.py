@@ -3,6 +3,8 @@ from flask import Flask, render_template, request
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
+import calendar
+
 
 app = Flask(__name__)
 
@@ -15,6 +17,13 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 
+# thanks to https://stackoverflow.com/a/14469780
+@app.template_filter("date_to_millis")
+def date_to_millis(d):
+    """Converts a datetime object to the number of milliseconds since the unix epoch."""
+    return calendar.timegm(d.utctimetuple()) * 1000
+
+
 class AvailabilityRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     available = db.Column(db.Boolean, nullable=False)
@@ -23,13 +32,9 @@ class AvailabilityRecord(db.Model):
 
 @app.route("/")
 def index():
-    # thanks to https://stackoverflow.com/a/8551979
-    record = AvailabilityRecord.query.order_by("-id").first()
-    available = record.available
+    record = AvailabilityRecord.query.order_by(AvailabilityRecord.id.desc()).first()
 
-    print("[#index] Available: ", available)
-
-    return render_template("main.html", available=available)
+    return render_template("main.html", record=record)
 
 
 @app.route("/update", methods=["POST"])
@@ -45,7 +50,5 @@ def update():
         record = AvailabilityRecord(available=available)
         db.session.add(record)
         db.session.commit()
-
-    print("[#update] Available: ", available)
 
     return "OK", 200
