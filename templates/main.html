@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>STATUS: {% if available %}AVAILABLE{% else %}UNAVAILABLE{% endif %}</title>
+    <title>STATUS: {% if record.available %}AVAILABLE{% else %}UNAVAILABLE{% endif %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
 </head>
 <body>
-<section class="hero is-fullheight {% if available %} is-success {% else %} is-danger {% endif %}">
+<section class="hero is-fullheight {% if record.available %} is-success {% else %} is-danger {% endif %}">
     <!-- Hero head: will stick at the top -->
     <div class="hero-head">
         <header class="navbar">
